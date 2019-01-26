@@ -4,37 +4,41 @@ const Schema = mongoose.Schema;
 
 const ClientInfoSchema = new Schema({
     userId: {
-        type: ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    website: String,
+    profile_image: {
+        type: mongoose.Schema.Types.String,
+        required: true
+    },
+    website: mongoose.Schema.Types.String,
     email: {
-        type: String,
+        type: mongoose.Schema.Types.String,
         trim: true,
         match: /^\w+@\w+\.[a-z]{1,3}$/,
         required: true
     },
     phone: {
-        type: String,
+        type: mongoose.Schema.Types.String,
         trim: true,
-        match: /^(\+\d\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}$/,
+        match: /^8 [0-9]{3} [0-9]{3}-[0-9]{2}-[0-9]{2}$/,
         required: true
     },
     name: {
-        type: String,
+        type: mongoose.Schema.Types.String,
         trim: true,
         minlength: 3,
         required: true
     },
     products: [{
-        image: String,
+        image: mongoose.Schema.Types.String,
         cost: {
-            type: Number,
+            type: mongoose.Schema.Types.Number,
             required: true,
         },
         name: {
-            type: String,
+            type: mongoose.Schema.Types.String,
             required: true
         }
     }]

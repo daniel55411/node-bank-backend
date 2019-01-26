@@ -6,14 +6,14 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
     login: {
-        type: String,
+        type: mongoose.Schema.Types.String,
         trim: true,
         minlength: 3,
         required: true,
         unique: true
     },
     password: {
-        type: String,
+        type: mongoose.Schema.Types.String,
         trim: true,
         required: true
     }
