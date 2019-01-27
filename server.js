@@ -2,6 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const users = require('./routes/users');
+const payments = require('./routes/payments');
 const mongoose = require('./config/database');
 const jwtmiddleware = require('./app/middlewares/jwtmiddleware');
 const app = express();
@@ -9,11 +10,8 @@ const app = express();
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/', function (req, res) {
-    res.json({"tutorial": "Build REST API with node.js"});
-});
-
 app.use('/users', users);
+app.use('/payments', payments);
 
 app.use(function (req, res, next) {
     let err = new Error('Not Found');

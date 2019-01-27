@@ -1,4 +1,4 @@
-const Response = require('../entities/response');
+const Response = require('../entities/Response');
 let jwt = require('jsonwebtoken');
 
 module.exports = {
