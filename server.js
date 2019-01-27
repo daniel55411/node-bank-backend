@@ -4,9 +4,11 @@ const bodyParser = require('body-parser');
 const users = require('./routes/users');
 const payments = require('./routes/payments');
 const admin = require('./routes/admin');
+const debug = require('./routes/debug');
 const mongoose = require('./config/database');
 const jwtmiddleware = require('./app/middlewares/jwtmiddleware');
 const cors = require('cors');
+
 const app = express();
 
 app.set('secretKey', 'some secret key');
@@ -18,6 +20,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use('/users', users);
 app.use('/payments', jwtmiddleware.validate, payments);
 app.use('/admin', jwtmiddleware.validate, admin);
+app.use('/debug', jwtmiddleware.validate, debug);
 
 app.use(function (req, res, next) {
     let err = new Error('Not Found');

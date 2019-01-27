@@ -13,12 +13,13 @@ router.post('/createInvoice', function (req, res) {
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', `attachment; filename=invoice-${counter}`);
 
-    let body = [];
-    req.body.forEach(function (item, key, arr) {
-        body.push([key, item]);
-    });
-
-    res.csv(body);
+    res.csv([
+        ['От кого', req.body.tin],
+        ['БИК', req.body.bik],
+        ['Номер счета', req.body.accountNumber],
+        ['За что', req.body.vat],
+        ['Сколько', req.body.sum]
+    ]);
 });
 
 module.exports = router;
