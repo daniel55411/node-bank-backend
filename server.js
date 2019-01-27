@@ -3,15 +3,19 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const users = require('./routes/users');
 const payments = require('./routes/payments');
+const admin = require('./routes/admin');
 const mongoose = require('./config/database');
 const jwtmiddleware = require('./app/middlewares/jwtmiddleware');
+const cors = require('cors');
 const app = express();
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/users', users);
-app.use('/payments', payments);
+app.use('/payments', jwtmiddleware.validate, payments);
+app.use('/admin', jwtmiddleware.validate, admin);
 
 app.use(function (req, res, next) {
     let err = new Error('Not Found');

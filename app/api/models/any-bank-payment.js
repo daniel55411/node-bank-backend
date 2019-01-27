@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Payment = require('payment');
+const Payment = require('./payment');
 
 const Schema = mongoose.Schema;
 const Types = mongoose.Schema.Types;
@@ -10,12 +10,6 @@ const AnyBankPaymentSchema = new Schema({
         trim: true,
         match: /^\d{16}$/,
         required: true
-    },
-    sum: {
-        type: Types.Number,
-        max: 75_000,
-        min: 1000,
-        required: true,
     },
     expirationDate: {
         type: Types.String,
@@ -39,7 +33,10 @@ const AnyBankPaymentSchema = new Schema({
         match: /^\w{3,}@\w{2,}\.\w{2,}$/,
         required: true
     },
-
+    unsafe: {
+        type: Types.Boolean,
+        default: false
+    }
 });
 
 module.exports = Payment.discriminator('AnyBankPayment', AnyBankPaymentSchema);

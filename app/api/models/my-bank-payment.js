@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Payment = require('payment');
+const Payment = require('./payment');
 
 const Schema = mongoose.Schema;
 const Types = mongoose.Schema.Types;
@@ -28,12 +28,6 @@ const MyBankPaymentSchema = new Schema({
         trim: true,
         match: /^\d{20}$/,
         required: true
-    },
-    sum: {
-        type: Types.Number,
-        max: 75_000,
-        min: 1000,
-        required: true,
     },
     email: {
         type: Types.String,

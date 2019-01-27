@@ -9,5 +9,16 @@ module.exports = {
 
         payment.save();
         res.json(Response.message("Payment has saved successfully").toJSON());
+    },
+    search: function (req, res) {
+        let criteria = PaymentUtils.getCriteria(req.body);
+
+        MyBankPayment.find(criteria.spec, criteria.options, function (err, userInfo) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(Response.data(userInfo).toJSON());
+            }
+        });
     }
 };

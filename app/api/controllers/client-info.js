@@ -1,9 +1,9 @@
-const clientInfoModel = require('../models/client-info');
+const ClientInfo = require('../models/client-info');
 const Response = require('../../entities/Response');
 
 module.exports = {
     getClientInfo: function (req, res, next) {
-        clientInfoModel.findOne({userId: req.body.userId}, function (err, userInfo) {
+        ClientInfo.findOne({userId: req.body.userId}, function (err, userInfo) {
             if (err) {
                 next(err);
             } else {
