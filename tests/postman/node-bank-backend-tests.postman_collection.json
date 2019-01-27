@@ -1,0 +1,2128 @@
+{
+	"info": {
+		"_postman_id": "8f613229-ee3c-4982-b2de-254e3964667c",
+		"name": "node-bank-backend-tests",
+		"description": "Tests for project node-bank-backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "cleanDb",
+			"item": [
+				{
+					"name": "authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48dfe485-751f-4696-9c38-2abc0e443eed",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Response jwt is presented'] = data.data !== null;",
+									"",
+									"postman.setGlobalVariable('x-access-token', data.data)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "login",
+									"value": "murmur",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwer",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveMyBankPayment_ValidateSuccess",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "371bfed4-9902-43e6-8910-2c6fa33ec7c9",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response message is \"Payment has saved successfully\"'] = data.message === 'Payment has saved successfully';",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "tin",
+									"value": "123456789012",
+									"type": "text"
+								},
+								{
+									"key": "bik",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "vat",
+									"value": "Без НДС",
+									"type": "text"
+								},
+								{
+									"key": "accountNumber",
+									"value": "21345678901234567890",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "bla@bla.ru",
+									"type": "text"
+								},
+								{
+									"key": "sum",
+									"value": "25123",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "8 922 133-31-13",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/payments/saveMyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payments",
+								"saveMyBankPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filterMyBankPayment_BeforeClean",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e9993ec-df28-47d6-b160-a05ba3d36201",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response data is not null'] = data.data !== null;",
+									"tests['Count is 1'] = data.data.length === 1;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "searching",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "asc",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "sortField",
+									"value": "sum",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/admin/filterMyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"filterMyBankPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cleanDb",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d109c010-9112-408f-a675-cc47e60d644b",
+								"exec": [
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['ResponseBody is \"ok\"'] = responseBody === \"ok\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"value": "{{x-access-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000/debug/cleandb",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"debug",
+								"cleandb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filterMyBankPayment_AfterClean",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e9993ec-df28-47d6-b160-a05ba3d36201",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response data is not null'] = data.data !== null;",
+									"tests['Count is 0'] = data.data.length === 0;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "searching",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "asc",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "sortField",
+									"value": "sum",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/admin/filterMyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"filterMyBankPayment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getClientInfo",
+			"item": [
+				{
+					"name": "authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48dfe485-751f-4696-9c38-2abc0e443eed",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Response jwt is presented'] = data.data !== null;",
+									"",
+									"postman.setGlobalVariable('x-access-token', data.data)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "login",
+									"value": "murmur",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwer",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getClientInfo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9837721c-4b70-4966-a599-b622f61a4828",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response email is mur@mail.ru'] = data.data.email === 'mur@mail.ru';",
+									"",
+									"postman.setGlobalVariable('x-access-token', data.data)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							},
+							{
+								"key": "X-Access-Token",
+								"value": "{{x-access-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000/users/getClientInfo",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"getClientInfo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "saveAnyBankPayment",
+			"item": [
+				{
+					"name": "authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48dfe485-751f-4696-9c38-2abc0e443eed",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Response jwt is presented'] = data.data !== null;",
+									"",
+									"postman.setGlobalVariable('x-access-token', data.data)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "login",
+									"value": "murmur",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwer",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cleanDb",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d109c010-9112-408f-a675-cc47e60d644b",
+								"exec": [
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['ResponseBody is \"ok\"'] = responseBody === \"ok\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"value": "{{x-access-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000/debug/cleandb",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"debug",
+								"cleandb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveAnyBankPayment_ValidateSuccess",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "371bfed4-9902-43e6-8910-2c6fa33ec7c9",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response message is \"Payment has saved successfully\"'] = data.message === 'Payment has saved successfully';",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"value": "{{x-access-token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "cardNumber",
+									"value": "1234567890123456",
+									"type": "text"
+								},
+								{
+									"key": "expirationDate",
+									"value": "12 18",
+									"type": "text"
+								},
+								{
+									"key": "cvc",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "comment",
+									"value": "comment comment",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "bla@bla.ru",
+									"type": "text"
+								},
+								{
+									"key": "sum",
+									"value": "44003",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/payments/saveAnyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payments",
+								"saveAnyBankPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveAnyBankPayment_ValidateFail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "371bfed4-9902-43e6-8910-2c6fa33ec7c9",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is false'] = data.status === false;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "cardNumber",
+									"value": "123456789asd0123456",
+									"type": "text"
+								},
+								{
+									"key": "expirationDate",
+									"value": "12 18",
+									"type": "text"
+								},
+								{
+									"key": "cvc",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "comment",
+									"value": "comment comment",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "bla@bla.ru",
+									"type": "text"
+								},
+								{
+									"key": "sum",
+									"value": "44003",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/payments/saveAnyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payments",
+								"saveAnyBankPayment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "saveMyBankPayment",
+			"item": [
+				{
+					"name": "authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48dfe485-751f-4696-9c38-2abc0e443eed",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Response jwt is presented'] = data.data !== null;",
+									"",
+									"postman.setGlobalVariable('x-access-token', data.data)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "login",
+									"value": "murmur",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwer",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cleanDb",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d109c010-9112-408f-a675-cc47e60d644b",
+								"exec": [
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['ResponseBody is \"ok\"'] = responseBody === \"ok\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"value": "{{x-access-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000/debug/cleandb",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"debug",
+								"cleandb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveMyBankPayment_ValidateSuccess",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "371bfed4-9902-43e6-8910-2c6fa33ec7c9",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response message is \"Payment has saved successfully\"'] = data.message === 'Payment has saved successfully';",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "tin",
+									"value": "123456789012",
+									"type": "text"
+								},
+								{
+									"key": "bik",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "vat",
+									"value": "Без НДС",
+									"type": "text"
+								},
+								{
+									"key": "accountNumber",
+									"value": "21345678901234567890",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "bla@bla.ru",
+									"type": "text"
+								},
+								{
+									"key": "sum",
+									"value": "25123",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "8 922 133-31-13",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/payments/saveMyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payments",
+								"saveMyBankPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveMyBankPayment_ValidateFail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "371bfed4-9902-43e6-8910-2c6fa33ec7c9",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is false'] = data.status === false;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "tin",
+									"value": "123456789012",
+									"type": "text"
+								},
+								{
+									"key": "bik",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "vat",
+									"value": "Без НДСasd",
+									"type": "text"
+								},
+								{
+									"key": "accountNumber",
+									"value": "21345678901234567890",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "bla@bla.ru",
+									"type": "text"
+								},
+								{
+									"key": "sum",
+									"value": "25123",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "8 922 133-31-13",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/payments/saveMyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payments",
+								"saveMyBankPayment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "filterMyBankPayment",
+			"item": [
+				{
+					"name": "authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48dfe485-751f-4696-9c38-2abc0e443eed",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Response jwt is presented'] = data.data !== null;",
+									"",
+									"postman.setGlobalVariable('x-access-token', data.data)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "login",
+									"value": "murmur",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwer",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cleanDb",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d109c010-9112-408f-a675-cc47e60d644b",
+								"exec": [
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['ResponseBody is \"ok\"'] = responseBody === \"ok\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"value": "{{x-access-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000/debug/cleandb",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"debug",
+								"cleandb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveMyBankPayment_ValidateSuccess_1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "371bfed4-9902-43e6-8910-2c6fa33ec7c9",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response message is \"Payment has saved successfully\"'] = data.message === 'Payment has saved successfully';",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "tin",
+									"value": "123456789012",
+									"type": "text"
+								},
+								{
+									"key": "bik",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "vat",
+									"value": "Без НДС",
+									"type": "text"
+								},
+								{
+									"key": "accountNumber",
+									"value": "21345678901234567890",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "bla@bla.ru",
+									"type": "text"
+								},
+								{
+									"key": "sum",
+									"value": "25123",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "8 922 133-31-13",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/payments/saveMyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payments",
+								"saveMyBankPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveMyBankPayment_ValidateSuccess_2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "371bfed4-9902-43e6-8910-2c6fa33ec7c9",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response message is \"Payment has saved successfully\"'] = data.message === 'Payment has saved successfully';",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "tin",
+									"value": "123456789012",
+									"type": "text"
+								},
+								{
+									"key": "bik",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "vat",
+									"value": "Без НДС",
+									"type": "text"
+								},
+								{
+									"key": "accountNumber",
+									"value": "21345678901234567890",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "andre@bla.ru",
+									"type": "text"
+								},
+								{
+									"key": "sum",
+									"value": "33333",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "8 922 133-31-13",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/payments/saveMyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payments",
+								"saveMyBankPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filterMyBankPayment_OnlySorting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e9993ec-df28-47d6-b160-a05ba3d36201",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response data is not null'] = data.data !== null;",
+									"tests['Correct order'] = data.data[0].sum > data.data[1].sum;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"value": "{{x-access-token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "searching",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "asc",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "sortField",
+									"value": "sum",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/admin/filterMyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"filterMyBankPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveMyBankPayment_ValidateSuccess_3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "371bfed4-9902-43e6-8910-2c6fa33ec7c9",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response message is \"Payment has saved successfully\"'] = data.message === 'Payment has saved successfully';",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "tin",
+									"value": "123456789012",
+									"type": "text"
+								},
+								{
+									"key": "bik",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "vat",
+									"value": "Без НДС",
+									"type": "text"
+								},
+								{
+									"key": "accountNumber",
+									"value": "21345678901234567890",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "xandreyyyy@bla.ru",
+									"type": "text"
+								},
+								{
+									"key": "sum",
+									"value": "26000",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "8 922 133-31-13",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/payments/saveMyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payments",
+								"saveMyBankPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filterMyBankPayment_WithSearching",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e9993ec-df28-47d6-b160-a05ba3d36201",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response data is not null'] = data.data !== null;",
+									"tests['Count is 2'] = data.data.length === 2;",
+									"tests['First email is xandreyyyy@bla.ru and second one is andre@bla.ru'] = data.data[0].email === 'xandreyyyy@bla.ru' && data.data[1].email === 'andre@bla.ru';"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "searching",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "asc",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "sortField",
+									"value": "sum",
+									"type": "text"
+								},
+								{
+									"key": "searchField",
+									"value": "email",
+									"type": "text"
+								},
+								{
+									"key": "searchValue",
+									"value": "andre",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/admin/filterMyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"filterMyBankPayment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "markUnsafe",
+			"item": [
+				{
+					"name": "authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48dfe485-751f-4696-9c38-2abc0e443eed",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Response jwt is presented'] = data.data !== null;",
+									"",
+									"postman.setGlobalVariable('x-access-token', data.data)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "login",
+									"value": "murmur",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwer",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cleanDb",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d109c010-9112-408f-a675-cc47e60d644b",
+								"exec": [
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['ResponseBody is \"ok\"'] = responseBody === \"ok\";"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"value": "{{x-access-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000/debug/cleandb",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"debug",
+								"cleandb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveAnyBankPayment_ValidateSuccess",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "371bfed4-9902-43e6-8910-2c6fa33ec7c9",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response message is \"Payment has saved successfully\"'] = data.message === 'Payment has saved successfully';",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "cardNumber",
+									"value": "1234567890123456",
+									"type": "text"
+								},
+								{
+									"key": "expirationDate",
+									"value": "12 21",
+									"type": "text"
+								},
+								{
+									"key": "cvc",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "comment",
+									"value": "21345678901234567890",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "bla@bla.ru",
+									"type": "text"
+								},
+								{
+									"key": "sum",
+									"value": "25123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/payments/saveAnyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payments",
+								"saveAnyBankPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filterAnyBankPayment_Before",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e9993ec-df28-47d6-b160-a05ba3d36201",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response data is not null'] = data.data !== null;",
+									"tests['Count is 1'] = data.data.length === 1;",
+									"tests['Is not unsafe'] = data.data[0].unsafe === false;",
+									"",
+									"postman.setGlobalVariable('payment_id', data.data[0]._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "searching",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "asc",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "sortField",
+									"value": "sum",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/admin/filterAnyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"filterAnyBankPayment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "markUnsafe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "95f6a801-67f8-4667-8159-975aa28cf1a7",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response message is \"Payment has marked as unsafe successfully\"'] = data.message === 'Payment has marked as unsafe successfully';"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"value": "{{x-access-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:3000/admin/markUnsafe/{{payment_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"markUnsafe",
+								"{{payment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filterAnyBankPayment_After",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e9993ec-df28-47d6-b160-a05ba3d36201",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Status is true'] = data.status === true;",
+									"tests['CORS is *'] = postman.getResponseHeader('Access-Control-Allow-Origin') === '*';",
+									"tests['Response data is not null'] = data.data !== null;",
+									"tests['Count is 1'] = data.data.length === 1;",
+									"tests['Is unsafe'] = data.data[0].unsafe === true;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"type": "text",
+								"value": "{{x-access-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "searching",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "asc",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "sortField",
+									"value": "sum",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/admin/filterAnyBankPayment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"filterAnyBankPayment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "createInvoice",
+			"item": [
+				{
+					"name": "authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48dfe485-751f-4696-9c38-2abc0e443eed",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"",
+									"tests['Status code is 200'] = responseCode.code == 200;",
+									"tests['Response jwt is presented'] = data.data !== null;",
+									"",
+									"postman.setGlobalVariable('x-access-token', data.data)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "login",
+									"value": "murmur",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwer",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createInvoice",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5e17bd2e-d260-4b4c-a052-d73dc753fb3b",
+								"exec": [
+									"tests['It\\'s csv file'] = postman.getResponseHeader('Content-Type').indexOf( 'text/csv') >= 0;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Access-Token",
+								"value": "{{x-access-token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "tin",
+									"value": "123456789012",
+									"type": "text"
+								},
+								{
+									"key": "bik",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "accountNumber",
+									"value": "21345678901234567890",
+									"type": "text"
+								},
+								{
+									"key": "vat",
+									"value": "Без НДС",
+									"type": "text"
+								},
+								{
+									"key": "sum",
+									"value": "25123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/payments/createInvoice",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"payments",
+								"createInvoice"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "unauth-request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f55937d4-1fa1-428f-ac56-c857fae0d317",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"",
+							"tests['Status code is 200'] = responseCode.code == 200;",
+							"tests['Response status is false'] = data.status === false;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/users/getClientInfo",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"getClientInfo"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "1594f69b-5c6c-4312-b210-153d1eea2013",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c9ee1a0f-8f27-471f-b47b-5add350e525f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
