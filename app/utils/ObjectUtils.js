@@ -3,7 +3,7 @@ module.exports = {
         let o = {};
 
         keys.forEach(function (item, i, arr) {
-            if (obj.hasOwnProperty(item)) {
+            if (item in obj) {
                 o[item] = obj[item];
             }
         });

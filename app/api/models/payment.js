@@ -11,7 +11,7 @@ const PaymentSchema = new Schema({
     },
     sum: {
         type: Types.Number,
-        max: 75_000,
+        max: 75000,
         min: 1000,
         required: true,
     }

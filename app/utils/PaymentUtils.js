@@ -1,4 +1,4 @@
-const ObjectUtils = ire('./ObjectUtils');
+const ObjectUtils = require('./ObjectUtils');
 
 const ANY_BANK_PAYMENT_KEYS = [
     'cardNumber', 'sum', 'expirationDate',

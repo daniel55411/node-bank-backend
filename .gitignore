@@ -1,6 +1,9 @@
 #IDE
 .idea
 
+# Mongodb data
+data
+
 # Logs
 logs
 *.log

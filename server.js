@@ -9,6 +9,8 @@ const jwtmiddleware = require('./app/middlewares/jwtmiddleware');
 const cors = require('cors');
 const app = express();
 
+app.set('secretKey', 'some secret key');
+
 app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -35,7 +37,7 @@ app.use(function (err, req, res, next) {
 
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-app.listen(3000, function () {
+app.listen(3000, '0.0.0.0', function () {
     console.log('Node server listening on port 3000');
 });
 

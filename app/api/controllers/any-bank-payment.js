@@ -7,8 +7,13 @@ module.exports = {
         let obj = PaymentUtils.narrowAnyBankPayment(req.body),
             payment = new AnyBankPayment(obj);
 
-        payment.save();
-        res.json(Response.message("Payment has saved successfully").toJSON());
+        payment.save(function (err) {
+            if (err) {
+                res.json(Response.fail(err.message).toJSON());
+            } else {
+                res.json(Response.ok('Payment has saved successfully'));
+            }
+        });
     },
     search: function (req, res, next) {
         let criteria = PaymentUtils.getCriteria(req.body);
@@ -20,5 +25,17 @@ module.exports = {
                 res.json(Response.data(userInfo).toJSON());
             }
         });
+    },
+    markUnsafe: function (req, res, next) {
+        AnyBankPayment.findOneAndUpdate(
+            {_id: req.params.id},
+            {$set: {unsafe: true}},
+            function (err) {
+                if (err) {
+                    res.json(Response.fail(err.message).toJSON());
+                } else {
+                    res.json(Response.ok('Payment has marked as unsafe successfully'));
+                }
+            })
     }
 };

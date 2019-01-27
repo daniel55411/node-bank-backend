@@ -3,14 +3,19 @@ const Response = require('../../entities/Response');
 const PaymentUtils = require('../../utils/PaymentUtils');
 
 module.exports = {
-    save: function (req, res, next) {
+    save: function (req, res) {
         let obj = PaymentUtils.narrowMyBankPayment(req.body),
             payment = new MyBankPayment(obj);
 
-        payment.save();
-        res.json(Response.message("Payment has saved successfully").toJSON());
+        payment.save(function (err) {
+            if (err) {
+                res.json(Response.fail(err.message).toJSON());
+            } else {
+                res.json(Response.ok('Payment has saved successfully'));
+            }
+        });
     },
-    search: function (req, res) {
+    search: function (req, res, next) {
         let criteria = PaymentUtils.getCriteria(req.body);
 
         MyBankPayment.find(criteria.spec, criteria.options, function (err, userInfo) {
