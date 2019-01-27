@@ -3,7 +3,7 @@ const mongoDB = 'mongodb://localhost/bank';
 const User = require('../app/api/models/users');
 const ClientInfo = require('../app/api/models/client-info');
 
-mongoose.connect(mongoDB, function() {
+function setUp() {
     mongoose.connection.db.dropDatabase();
 
     let user = new User({
@@ -38,6 +38,10 @@ mongoose.connect(mongoDB, function() {
 
     user.save();
     clientInfo.save();
+}
+
+mongoose.connect(mongoDB, function() {
+    setUp();
 });
 
 mongoose.Promise = global.Promise;

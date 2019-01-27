@@ -1,7 +1,7 @@
 const userModel = require('../models/users');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Response = require('../../entities/response');
+const Response = require('../../entities/Response');
 
 module.exports = {
     authenticate: function (req, res, next) {

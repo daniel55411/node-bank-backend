@@ -1,5 +1,5 @@
 const clientInfoModel = require('../models/client-info');
-const Response = require('../../entities/response');
+const Response = require('../../entities/Response');
 
 module.exports = {
     getClientInfo: function (req, res, next) {

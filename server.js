@@ -9,10 +9,6 @@ const app = express();
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/', function (req, res) {
-    res.json({"tutorial": "Build REST API with node.js"});
-});
-
 app.use('/users', users);
 
 app.use(function (req, res, next) {
