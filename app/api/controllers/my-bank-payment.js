@@ -16,14 +16,6 @@ module.exports = {
         });
     },
     search: function (req, res, next) {
-        let criteria = PaymentUtils.getCriteria(req.body);
-
-        MyBankPayment.find(criteria.spec, criteria.options, function (err, userInfo) {
-            if (err) {
-                next(err);
-            } else {
-                res.json(Response.data(userInfo).toJSON());
-            }
-        });
+        PaymentUtils.search(req, res, next, MyBankPayment);
     }
 };

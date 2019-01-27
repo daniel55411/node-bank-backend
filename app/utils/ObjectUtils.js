@@ -9,5 +9,8 @@ module.exports = {
         });
 
         return o;
+    },
+    toBoolean: function (str) {
+        return str.toLowerCase() === 'true';
     }
 };

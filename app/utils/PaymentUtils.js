@@ -1,4 +1,5 @@
 const ObjectUtils = require('./ObjectUtils');
+const Response = require('../entities/Response');
 
 const ANY_BANK_PAYMENT_KEYS = [
     'cardNumber', 'sum', 'expirationDate',
@@ -18,14 +19,13 @@ module.exports = {
         return ObjectUtils.narrow(obj, MY_BANK_PAYMENT_KEYS);
     },
     getCriteria: function (body) {
-        let options = {
-                sort: {
-                    data_added: body.asc ? 1 : -1
-                }
-            },
-            spec = {};
+        let sort = {},
+            spec = {},
+            sortField = body.sortField || 'sum';
 
-        if (body.searching) {
+        sort[sortField] = ObjectUtils.toBoolean(body.asc) ? 1 : -1;
+
+        if (ObjectUtils.toBoolean(body.searching) && body.searchField && body.searchValue) {
             if (body.searchField === 'sum') {
                 spec[body.searchField] = +body.searchValue;
             } else {
@@ -34,8 +34,21 @@ module.exports = {
         }
 
         return {
-            options: options,
+            sort: sort,
             spec: spec
         };
+    },
+    search: function(req, res, next, model) {
+        let criteria = this.getCriteria(req.body);
+
+        model.find(criteria.spec)
+            .sort(criteria.sort)
+            .exec(function (err, userInfo) {
+                if (err) {
+                    next(err);
+                } else {
+                    res.json(Response.data(userInfo).toJSON());
+                }
+            });
     }
 };
